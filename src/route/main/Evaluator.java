@@ -6,14 +6,10 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Scanner;
 
-import javax.xml.crypto.dsig.keyinfo.RetrievalMethod;
-
-import org.omg.CosNaming.IstringHelper;
-
 public class Evaluator extends CalcVisitor {
-	
+
 	Map<String, Object> record = new HashMap<String, Object>();
-	
+
 	public Object eval(CalcTree node){
 		return node.accept(this);
 	}
@@ -22,7 +18,7 @@ public class Evaluator extends CalcVisitor {
 	public Object visit(Source node) {
 		return null;
 	}
-	
+
 	@Override
 	public Object visit(Funcdecl node) {
 		String id = String.class.cast(node.child.get(0).accept(this));
@@ -31,15 +27,15 @@ public class Evaluator extends CalcVisitor {
 		@SuppressWarnings("unchecked")
 		LinkedList<SimpleEntry<Object, Boolean>> returnList = (LinkedList<SimpleEntry<Object, Boolean>>) node.child.get(2).accept(this);
 		returnList.addLast(new SimpleEntry<Object, Boolean>(node.child.get(3).accept(this), true));
-		
+
 		@SuppressWarnings("unchecked")
 		Map<String,Object> funcrecord = (Map<String, Object>) node.child.get(4).accept(this);
 		Function func = new Function(arglist, returnList, funcrecord);
-		
+
 		record.put(id, func);
 		return null;
 	}
-	
+
 	@Override
 	public Object visit(Arglist node){
 		String leftside = String.class.cast(node.child.get(0).accept(this));
@@ -62,13 +58,13 @@ public class Evaluator extends CalcVisitor {
 			return null;
 		}
 	}
-	
+
 	@Override
 	public Object visit(Returnlist node) {
 		//return value is a list data structure?--Yes!!
-		return null;	
+		return null;
 	}
-	
+
 	@Override
 	public Object visit(Add node) {
 		Integer left = Integer.class.cast(node.child.get(0).accept(this));
@@ -97,7 +93,7 @@ public class Evaluator extends CalcVisitor {
 		}
 		return false;
 	}
-	
+
 	public Object visit(NotEquals node) {
 		Object left = node.child.get(0).accept(this);
 		Object right = node.child.get(1).accept(this);
@@ -146,21 +142,21 @@ public class Evaluator extends CalcVisitor {
 		}
 		return true;
 	}
-	
+
 	@Override
 	public Object visit(And node){
 		Boolean left = Boolean.class.cast(node.child.get(0).accept(this));
 		Boolean right = Boolean.class.cast(node.child.get(1).accept(this));
 		return left && right;
 	}
-	
+
 	@Override
 	public Object visit(Or node){
 		Boolean left = Boolean.class.cast(node.child.get(0).accept(this));
 		Boolean right = Boolean.class.cast(node.child.get(1).accept(this));
 		return left || right;
 	}
-	
+
 	@Override
 	public Object visit(Vardecl node){
 		String id = String.class.cast(node.child.get(0).accept(this));
@@ -193,28 +189,38 @@ public class Evaluator extends CalcVisitor {
 		System.out.println(str);
 		return null;
 	}
-	
+
 	@Override
 	public Object visit(Name node) {
 		return node.str;
 	}
-	
+
 	@Override
 	public Object visit(True node){
 		return node.bool;
 	}
-	
+
 	@Override
 	public Object visit(False node){
 		return node.bool;
 	}
-	
+
 	@Override
 	public Object visit(Unop node){
 		Object leftnode = node.child.get(0).accept(this);
 		Object rightnode = node.child.get(1).accept(this);
-		//Not yet! Also, Minus and Not
-		return rightnode;
+		if(rightnode instanceof Integer ){
+			Integer value =(Integer)rightnode *(-1);
+			return value;
+		}
+		else if (rightnode instanceof Boolean){
+			Boolean value = (Boolean)rightnode;
+			return !value;
+		}
+		else{
+			return null;
+			//error
+		}
 	}
-	
+
 }
