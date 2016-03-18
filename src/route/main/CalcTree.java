@@ -3,7 +3,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nez.ast.CommonTree;
-import route.main.Translator;
 
 public abstract class CalcTree {
 	List<CalcTree> child;
@@ -26,7 +25,7 @@ abstract class BinaryExpr extends CalcTree {
 }
 
 class Source extends CalcTree {
-	
+
 	public Source(CommonTree... node) {
 		super();
 		for (int i = 0; i < node.length; i++) {
@@ -67,7 +66,7 @@ class Arglist extends BinaryExpr {
 	public Object accept(CalcVisitor visitor) {
 		return visitor.visit(this);
 	}
-	
+
 }
 
 class Returnlist extends BinaryExpr {
@@ -82,7 +81,7 @@ class Returnlist extends BinaryExpr {
 }
 
 class Vardecl extends BinaryExpr {
-	
+
 	public Vardecl(CalcTree left, CalcTree right){
 		super(left, right);
 	}
@@ -217,7 +216,7 @@ class Or extends BinaryExpr {
 	public Object accept(CalcVisitor visitor) {
 		return visitor.visit(this);
 	}
-	
+
 }
 
 class Unop extends BinaryExpr {
@@ -249,12 +248,12 @@ class In extends CalcTree {
 	public In(CalcTree target){
 		this.child.add(target);
 	}
-	
+
 	@Override
 	public Object accept(CalcVisitor visitor) {
 		return visitor.visit(this);
 	}
-	
+
 }
 
 class Out extends CalcTree{
@@ -266,7 +265,7 @@ class Out extends CalcTree{
 	public Object accept(CalcVisitor visitor) {
 		return visitor.visit(this);
 	}
-	
+
 }
 
 class Name extends CalcTree{
@@ -278,7 +277,7 @@ class Name extends CalcTree{
 	public Object accept(CalcVisitor visitor) {
 		return visitor.visit(this);
 	}
-	
+
 }
 
 class True extends CalcTree{
@@ -301,5 +300,24 @@ class False extends CalcTree{
 	public Object accept(CalcVisitor visitor) {
 		return visitor.visit(this);
 	}
-	
+
+}
+class Minus extends CalcTree{
+	public Minus() {
+	}
+	@Override
+	public Object accept(CalcVisitor visitor) {
+		return visitor.visit(this);
+	}
+
+}
+
+class Not extends CalcTree{
+	public Not() {
+	}
+	@Override
+	public Object accept(CalcVisitor visitor) {
+		return visitor.visit(this);
+	}
+
 }

@@ -47,6 +47,10 @@ public class Translator {
 			return new True(Boolean.parseBoolean(node.toText()));
 		case "False":
 			return new True(Boolean.parseBoolean(node.toText()));
+		case "Minus":
+			return new Minus();
+		case "Not":
+			return new Not();
 		default:
 			break;
 		}

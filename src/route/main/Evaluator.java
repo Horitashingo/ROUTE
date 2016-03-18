@@ -223,4 +223,11 @@ public class Evaluator extends CalcVisitor {
 		}
 	}
 
+	public Boolean visit(Minus node){
+		return true;
+	}
+
+	public Boolean visit(Not node){
+		return false;
+	}
 }
